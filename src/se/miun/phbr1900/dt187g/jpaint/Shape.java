@@ -32,6 +32,8 @@ public abstract class Shape implements Drawable {
         this.color = color;
     }
 
+    public abstract boolean hasEndpoint();
+
     public abstract double getCircumference();
 
     public abstract double getArea();

@@ -21,8 +21,17 @@ public class Circle extends Shape {
     
     private double pi = 3.14;
 
+    public boolean hasEndpoint(){
+        if(points[1] == null){
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
     public double getRadius(){
-        if(points[1] != null){
+        if(hasEndpoint()){
             double a = points[0].getX() - points[1].getX();
             double b = points[0].getY() - points[1].getY();
             return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
@@ -40,21 +49,21 @@ public class Circle extends Shape {
     }
     @Override
     public double getCircumference() {
-        if(points[1] != null){
+        if(hasEndpoint()){
             return pi * 2 * getRadius(); 
         }
         return -1;
     }
     @Override
     public double getArea() {
-        if(points[1] != null){
+        if(hasEndpoint()){
             return pi * Math.pow(getRadius(), 2);
         }
         return -1;
     }
     @Override
     public String toString(){
-        if(points[1] != null){
+        if(hasEndpoint()){
             return "Circle[start=" + points[0] + "; end=" + points[1] + "; radius=" + getRadius() + "color=" + color + "]";
         }
         return "Circle[start=" + points[0] + "; end=N/A; radius=N/A; color=" + color + "]";
