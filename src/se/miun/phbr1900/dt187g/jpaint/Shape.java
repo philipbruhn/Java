@@ -1,5 +1,14 @@
 package se.miun.phbr1900.dt187g.jpaint;
 
+/**
+* Shape
+*
+* Abstract base class for different shapes. Holds points and has methods that are the same for all shapes like addPoint.  
+*
+* @author phbr1900
+* @version 1.0
+*/
+
 public abstract class Shape implements Drawable {
 
     public Shape(double x, double y, String color) {

@@ -1,5 +1,14 @@
 package se.miun.phbr1900.dt187g.jpaint;
 
+/**
+* Cricle
+*
+* Inherits from Shape. Adds methods for calcutating radius, area and circumference on a circle.  
+*
+* @author phbr1900
+* @version 1.0
+*/
+
 import java.awt.Graphics;
 
 public class Circle extends Shape {

@@ -1,5 +1,14 @@
 package se.miun.phbr1900.dt187g.jpaint;
 
+/**
+* Point
+*
+* Add the object point which has coordinates on a 2D-plane. Complete with get and set methods. Overrides toString() with X,Y  
+*
+* @author phbr1900
+* @version 1.0
+*/
+
 public class Point {
     public Point() {
         x = 0.0;

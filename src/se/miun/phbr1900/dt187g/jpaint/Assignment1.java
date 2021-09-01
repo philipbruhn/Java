@@ -10,7 +10,7 @@ package se.miun.phbr1900.dt187g.jpaint;
 * user friendly and it is assumed as a high quality code.
 * 
 *
-* @author Your Name (studentid)
+* @author phbr1900
 * @version 1.0
 */
 public class Assignment1 {
