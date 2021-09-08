@@ -22,7 +22,7 @@ public class Circle extends Shape {
     private double pi = 3.14;
 
     public boolean hasEndpoint(){
-        if(points[1] == null){
+        if(points.size() < 2){
             return false;
         }
         else {
@@ -32,8 +32,8 @@ public class Circle extends Shape {
 
     public double getRadius(){
         if(hasEndpoint()){
-            double a = points[0].getX() - points[1].getX();
-            double b = points[0].getY() - points[1].getY();
+            double a = points.get(0).getX() - points.get(1).getX();
+            double b = points.get(0).getY() - points.get(1).getY();
             return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
         }
         return -1;
@@ -64,8 +64,8 @@ public class Circle extends Shape {
     @Override
     public String toString(){
         if(hasEndpoint()){
-            return "Circle[start=" + points[0] + "; end=" + points[1] + "; radius=" + getRadius() + "color=" + color + "]";
+            return this.getClass().getSimpleName()+"[start=" + points.get(0) + "; end=" + points.get(1) + "; radius=" + getRadius() + "; color=" + color + "]";
         }
-        return "Circle[start=" + points[0] + "; end=N/A; radius=N/A; color=" + color + "]";
+        return this.getClass().getSimpleName()+"[start=" + points.get(0) + "; end=N/A; radius=N/A; color=" + color + "]";
     }
 }

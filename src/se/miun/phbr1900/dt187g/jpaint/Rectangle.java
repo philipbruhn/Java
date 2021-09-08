@@ -21,7 +21,7 @@ public class Rectangle extends Shape {
 
     @Override
     public boolean hasEndpoint(){
-        if(points[1] == null){
+        if(points.size() < 2){
             return false;
         }
         else {
@@ -31,7 +31,7 @@ public class Rectangle extends Shape {
 
     public double getWidth(){
         if(hasEndpoint()){
-            double width = points[0].getX() - points[1].getX();
+            double width = points.get(0).getX() - points.get(1).getX();
             if(width < 0){
                 return 0-width;
             }
@@ -42,7 +42,7 @@ public class Rectangle extends Shape {
 
     public double getHeight(){
         if(hasEndpoint()){
-            double height = points[0].getY() - points[1].getY();
+            double height = points.get(0).getY() - points.get(1).getY();
             if(height < 0){
                 return 0-height;
             }
@@ -78,9 +78,9 @@ public class Rectangle extends Shape {
     @Override
     public String toString(){
         if(hasEndpoint()){
-            return "Rectangle[start=" + points[0] + "; end=" + points[1] + "; width=" + getWidth() + "; height=" + getHeight() + "; color=" + color + "]";
+            return this.getClass().getSimpleName()+"[start=" + points.get(0) + "; end=" + points.get(1) + "; width=" + getWidth() + "; height=" + getHeight() + "; color=" + color + "]";
         }
-        return "Rectangle[start=" + points[0] + "; end=N/A; width=N/A; height=N/A; color=" + color + "]";
+        return this.getClass().getSimpleName()+"[start=" + points.get(0) + "; end=N/A; width=N/A; height=N/A; color=" + color + "]";
 
     }
 }

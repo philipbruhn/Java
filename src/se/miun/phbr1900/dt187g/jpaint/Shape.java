@@ -1,5 +1,7 @@
 package se.miun.phbr1900.dt187g.jpaint;
 
+import java.util.ArrayList;
+
 /**
 * Shape
 *
@@ -12,18 +14,18 @@ package se.miun.phbr1900.dt187g.jpaint;
 public abstract class Shape implements Drawable {
 
     public Shape(double x, double y, String color) {
-        points = new Point[2];
-        points[0] = new Point(x,y);
+        points = new ArrayList<Point>(2);
+        points.add(new Point(x,y));
         this.color = color;
     }
     public Shape(Point p, String color) {
-        points = new Point[2];
-        points[0] = p;
+        points = new ArrayList<Point>(2);
+        points.add(p);
         this.color = color;
     }
 
     protected String color;
-    protected Point[] points;
+    protected ArrayList<Point> points;
 
     public String getColor(){
         return color;
@@ -39,9 +41,15 @@ public abstract class Shape implements Drawable {
     public abstract double getArea();
 
     public void addPoint(Point point){
-        points[1] = point;
+        if(hasEndpoint()){
+            points.set(1, point);
+        }
+        points.add(point);
     }
     public void addPoint(double x, double y){
-        points[1] = new Point(x,y);
+        if(hasEndpoint()){
+            points.set(1, new Point(x,y));
+        }
+        points.add(new Point(x,y));
     }
 }
