@@ -7,7 +7,7 @@ package se.miun.phbr1900.dt187g.jpaint;
 * Has methods for getting and setting name and author, aswell as the amout of shapes, total circumference and total area.  
 *
 * @author phbr1900
-* @version 1.0
+* @version 1.1
 */
 
 import java.awt.Graphics;
@@ -17,6 +17,7 @@ public class Drawing implements Drawable {
     public Drawing() {
 
     }
+
     public Drawing(String name, String author) {
         this.name = name;
         this.author = author;
@@ -29,23 +30,29 @@ public class Drawing implements Drawable {
     public String getName(){
         return name;
     }
+
     public void setName(String name){
         this.name = name;
     }
+    
     public String getAuthor(){
         return author;
     }
+
     public void setAuthor(String author){
         this.author = author;
     }
+
     public void addShape(Shape shape){
         if (shape != null){
             shapes.add(shape);
         }
     }
+
     public int getSize(){
         return shapes.size();
     }
+
     public double getTotalCircumference(){
         double totalCircumference = 0;
         for(Shape shape : shapes){
@@ -56,6 +63,7 @@ public class Drawing implements Drawable {
         }
         return totalCircumference;
     }
+
     public double getTotalArea(){
         double totalArea = 0;
         for(Shape shape : shapes){
@@ -66,6 +74,7 @@ public class Drawing implements Drawable {
         }
         return totalArea;
     }
+
     @Override
     public void draw() {
         String print = "A drawing by " + author + " called " + name;
@@ -75,10 +84,12 @@ public class Drawing implements Drawable {
         System.out.println(print);
         
     }
+
     @Override
     public void draw(Graphics g) {
         
     }
+
     @Override
     public String toString(){
         return this.getClass().getSimpleName()+"[name=" + name + "; author=" + author + "; size=" + getSize() + "; circumference=" + getTotalCircumference() + "; area=" + getTotalArea() + "]";

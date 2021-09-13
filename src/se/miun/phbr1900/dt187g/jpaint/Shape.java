@@ -8,15 +8,14 @@ import java.util.ArrayList;
 * Abstract base class for different shapes. Holds points and has methods that are the same for all shapes like addPoint.  
 *
 * @author phbr1900
-* @version 1.0
+* @version 1.1
 */
 
 public abstract class Shape implements Drawable {
 
     public Shape(double x, double y, String color) {
-        points = new ArrayList<Point>(2);
-        points.add(new Point(x,y));
-        this.color = color;
+        
+       this(new Point(x, y), color);
     }
     public Shape(Point p, String color) {
         points = new ArrayList<Point>(2);
