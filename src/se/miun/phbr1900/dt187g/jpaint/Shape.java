@@ -12,10 +12,9 @@ package se.miun.phbr1900.dt187g.jpaint;
 public abstract class Shape implements Drawable {
 
     public Shape(double x, double y, String color) {
-        points = new Point[2];
-        points[0] = new Point(x,y);
-        this.color = color;
+        this(new Point(x,y),color);
     }
+    
     public Shape(Point p, String color) {
         points = new Point[2];
         points[0] = p;

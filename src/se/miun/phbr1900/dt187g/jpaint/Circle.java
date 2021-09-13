@@ -19,7 +19,7 @@ public class Circle extends Shape {
         super(p, color);
     }
     
-    private double pi = 3.14;
+    public static final double PI = 3.14;
 
     public boolean hasEndpoint(){
         if(points[1] == null){
@@ -50,14 +50,14 @@ public class Circle extends Shape {
     @Override
     public double getCircumference() {
         if(hasEndpoint()){
-            return pi * 2 * getRadius(); 
+            return PI * 2 * getRadius(); 
         }
         return -1;
     }
     @Override
     public double getArea() {
         if(hasEndpoint()){
-            return pi * Math.pow(getRadius(), 2);
+            return PI * Math.pow(getRadius(), 2);
         }
         return -1;
     }
