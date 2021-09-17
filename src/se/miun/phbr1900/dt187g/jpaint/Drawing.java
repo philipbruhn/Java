@@ -90,6 +90,19 @@ public class Drawing implements Drawable {
         
     }
 
+    public boolean save(String filename) throws DrawingException{
+        if((author == null || author.length() == 0 ) && (name == null || name.length() == 0 )){
+            throw new DrawingException("The drawing is missing author and name");
+        }
+        if(author == null || author.length() == 0 ){
+            throw new DrawingException("The drawing is missing author");
+        }
+        if(name == null || name.length() == 0 ){
+            throw new DrawingException("The drawing is missing name");
+        }
+        return true;
+    }
+
     @Override
     public String toString(){
         return this.getClass().getSimpleName()+"[name=" + name + "; author=" + author + "; size=" + getSize() + "; circumference=" + getTotalCircumference() + "; area=" + getTotalArea() + "]";

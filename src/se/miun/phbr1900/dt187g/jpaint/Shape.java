@@ -14,9 +14,9 @@ import java.util.ArrayList;
 public abstract class Shape implements Drawable {
 
     public Shape(double x, double y, String color) {
-        
        this(new Point(x, y), color);
     }
+
     public Shape(Point p, String color) {
         points = new ArrayList<Point>(2);
         points.add(p);
