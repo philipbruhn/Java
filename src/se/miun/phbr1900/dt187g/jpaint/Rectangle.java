@@ -31,22 +31,14 @@ public class Rectangle extends Shape {
 
     public double getWidth(){
         if(hasEndpoint()){
-            double width = points.get(0).getX() - points.get(1).getX();
-            if(width < 0){
-                return 0-width;
-            }
-            return width;
+            return Math.abs(points.get(0).getX() - points.get(1).getX());
         }
         return -1;
     }
 
     public double getHeight(){
         if(hasEndpoint()){
-            double height = points.get(0).getY() - points.get(1).getY();
-            if(height < 0){
-                return 0-height;
-            }
-            return height;
+            return Math.abs(points.get(0).getY() - points.get(1).getY());
         }
         return -1;
     }
