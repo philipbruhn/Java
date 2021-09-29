@@ -1,7 +1,9 @@
 package se.miun.phbr1900.dt187g.jpaint;
 
 import javax.swing.*;
+import javax.swing.event.*;
 import java.awt.*;
+import java.awt.event.*;
 
 /**
 * <h1>JPaintFrame</h1>
@@ -12,18 +14,29 @@ import java.awt.*;
 * @version 1.0
 */
 
-public class JPaintFrame extends JFrame {
+public class JPaintFrame extends JFrame implements ActionListener, MouseInputListener{
 
     //MenyBar
     private JMenuBar menuBar;
-    private JMenu menu;
-    private JMenuItem menuItem;
+    private JMenu menuFile;
+    private JMenuItem menuItemNew;
+    private JMenuItem menuItemSave;
+    private JMenuItem menuItemLoad;
+    private JMenuItem menuItemExit;
+    private JMenu menuEdit;
+    private JMenuItem menuItemUndo;
+    private JMenuItem menuItemName;
+    private JMenuItem menuItemAuthor;
 
     //ToolBar
     private JPanel toolBar;
     private JPanel colorsPanel;
-    private JPanel colorPanel;
-    private JComboBox shapesCB;
+    private JPanel colorPanel1;
+    private JPanel colorPanel2;
+    private JPanel colorPanel3;
+    private JPanel colorPanel4;
+    private JPanel colorPanel5;
+    private JComboBox<String> shapesCB;
 
     //Draw area
     private JPanel drawArea;
@@ -36,6 +49,9 @@ public class JPaintFrame extends JFrame {
     private JLabel colorLbl;
     private JPanel color;
 
+    //Variables
+    private String name;
+    private String author;
 
 
     public JPaintFrame() {
@@ -68,28 +84,35 @@ public class JPaintFrame extends JFrame {
         menuBar = new JMenuBar();
         
         //File
-        menu = new JMenu("File");
-        menuItem = new JMenuItem("New...");
-        menu.add(menuItem);
-        menuItem = new JMenuItem("Save as...");
-        menu.add(menuItem);
-        menuItem = new JMenuItem("Load...");
-        menu.add(menuItem);
-        menu.addSeparator();
-        menuItem = new JMenuItem("Exit");
-        menu.add(menuItem);
-        menuBar.add(menu);
+        menuFile = new JMenu("File");
+        menuItemNew = new JMenuItem("New...");
+        menuItemNew.addActionListener(this);
+        menuFile.add(menuItemNew);
+        menuItemSave = new JMenuItem("Save as...");
+        menuItemSave.addActionListener(this);
+        menuFile.add(menuItemSave);
+        menuItemLoad = new JMenuItem("Load...");
+        menuItemLoad.addActionListener(this);
+        menuFile.add(menuItemLoad);
+        menuFile.addSeparator();
+        menuItemExit = new JMenuItem("Exit");
+        menuItemExit.addActionListener(this);
+        menuFile.add(menuItemExit);
+        menuBar.add(menuFile);
 
         //Edit
-        menu = new JMenu("Edit");
-        menuItem = new JMenuItem("Undo");
-        menu.add(menuItem);
-        menuItem = new JMenuItem("Name...");
-        menu.add(menuItem);
-        menuItem = new JMenuItem("Author...");
-        menu.add(menuItem);
+        menuEdit = new JMenu("Edit");
+        menuItemUndo = new JMenuItem("Undo");
+        menuItemUndo.addActionListener(this);
+        menuEdit.add(menuItemUndo);
+        menuItemName = new JMenuItem("Name...");
+        menuItemName.addActionListener(this);
+        menuEdit.add(menuItemName);
+        menuItemAuthor = new JMenuItem("Author...");
+        menuItemAuthor.addActionListener(this);
+        menuEdit.add(menuItemAuthor);
 
-        menuBar.add(menu);
+        menuBar.add(menuEdit);
         this.setJMenuBar(menuBar);
 
         //ToolBar
@@ -98,26 +121,29 @@ public class JPaintFrame extends JFrame {
 
         colorsPanel = new JPanel();
         colorsPanel.setLayout(new GridLayout(1,5));
-        colorPanel = new JPanel();
-        colorPanel.setBackground(Color.BLACK);
-        colorsPanel.add(colorPanel);
-        colorPanel = new JPanel();
-        colorPanel.setBackground(Color.GREEN);
-        colorsPanel.add(colorPanel);
-        colorPanel = new JPanel();
-        colorPanel.setBackground(Color.RED);
-        colorsPanel.add(colorPanel);
-        colorPanel = new JPanel();
-        colorPanel.setBackground(Color.BLUE);
-        colorsPanel.add(colorPanel);
-        colorPanel = new JPanel();
-        colorPanel.setBackground(Color.YELLOW);
-        colorsPanel.add(colorPanel);
+        colorPanel1 = new JPanel();
+        colorPanel1.setBackground(Color.BLACK);
+        colorPanel1.addMouseListener(this);
+        colorsPanel.add(colorPanel1);
+        colorPanel2 = new JPanel();
+        colorPanel2.setBackground(Color.GREEN);
+        colorPanel2.addMouseListener(this);
+        colorsPanel.add(colorPanel2);
+        colorPanel3 = new JPanel();
+        colorPanel3.setBackground(Color.RED);
+        colorPanel3.addMouseListener(this);
+        colorsPanel.add(colorPanel3);
+        colorPanel4 = new JPanel();
+        colorPanel4.setBackground(Color.BLUE);
+        colorPanel4.addMouseListener(this);
+        colorsPanel.add(colorPanel4);
+        colorPanel5 = new JPanel();
+        colorPanel5.setBackground(Color.YELLOW);
+        colorPanel5.addMouseListener(this);
+        colorsPanel.add(colorPanel5);
         toolBar.add(colorsPanel, BorderLayout.CENTER);
 
-        shapesCB = new JComboBox();
-        shapesCB.addItem("Rectangle");
-        shapesCB.addItem("Circle");
+        shapesCB = new JComboBox<String>(new String[]{"Rectangle", "Circle"});
         toolBar.add(shapesCB, BorderLayout.LINE_END);
 
         this.add(toolBar, BorderLayout.PAGE_START);
@@ -125,6 +151,7 @@ public class JPaintFrame extends JFrame {
         //Draw Area
         drawArea = new JPanel();
         drawArea.setBackground(Color.WHITE);
+        drawArea.addMouseMotionListener(this);
         this.add(drawArea, BorderLayout.CENTER);
 
         //StatusBar
@@ -148,8 +175,120 @@ public class JPaintFrame extends JFrame {
         this.add(statusBar, BorderLayout.PAGE_END);
 
 
+
     }
 
+   
+
+    private String getDrawingTitle(){
+        if((author == null || author.length() == 0 ) && (name == null || name.length() == 0 )){
+            return "";
+        }
+        if(author == null || author.length() == 0 ){
+            return name;
+        }
+        if(name == null || name.length() == 0 ){
+            return author;
+        }
+        return name + " by " + author;
+    }
+
+    private String getWindowTitle(){
+        return "JPaint" + (getDrawingTitle() != "" ? " - " + getDrawingTitle() : "");
+    }
+    private String getFilename(){
+        return getDrawingTitle() + ".shape" ;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == menuItemNew){
+            name = JOptionPane.showInputDialog(this, "Please enter a name for the drawing");
+            author = JOptionPane.showInputDialog(this, "Please enter your name");
+            this.setTitle(getWindowTitle());
+        }
+        if (e.getSource() == menuItemSave){
+            JOptionPane.showInputDialog(this, "Save drawing to:", getFilename());
+            this.setTitle(getWindowTitle());
+        }
+        if (e.getSource() == menuItemLoad){
+            JOptionPane.showInputDialog(this, "Load drawing from:");
+
+            this.setTitle(getWindowTitle());
+        }
+        if (e.getSource() == menuItemExit){
+            this.dispose();
+        }
+        if (e.getSource() == menuItemUndo){
+
+        }
+        if (e.getSource() == menuItemName){
+            name = JOptionPane.showInputDialog(this, "Please enter a name for the drawing");
+            this.setTitle(getWindowTitle());
+        }
+        if (e.getSource() == menuItemAuthor){
+            author = JOptionPane.showInputDialog(this, "Please enter your name");
+            this.setTitle(getWindowTitle());
+        }
+        
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (e.getSource() == colorPanel1){
+            color.setBackground(colorPanel1.getBackground());
+        }
+        if (e.getSource() == colorPanel2){
+            color.setBackground(colorPanel2.getBackground());
+        }
+        if (e.getSource() == colorPanel3){
+            color.setBackground(colorPanel3.getBackground());
+        }
+        if (e.getSource() == colorPanel4){
+            color.setBackground(colorPanel4.getBackground());
+        }
+        if (e.getSource() == colorPanel5){
+            color.setBackground(colorPanel5.getBackground());
+        }
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+        
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+        
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        if(e.getSource() == drawArea){
+            coordinatesLbl.setText("Coordinates: " + e.getX() + "," + e.getY());;
+        }
+    }
 
 
 }
