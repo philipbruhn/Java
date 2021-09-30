@@ -74,6 +74,9 @@ public class JPaintFrame extends JFrame implements ActionListener, MouseInputLis
         setPreferredSize(new Dimension(800, 640));
 		pack(); // sizes this window to fit the preferred size and layouts of its subcomponents
 
+        // Using null centers the window on the screen
+		setLocationRelativeTo(null);
+
 		// Make the window visible
 		setVisible(true);
 	}
@@ -178,8 +181,6 @@ public class JPaintFrame extends JFrame implements ActionListener, MouseInputLis
 
     }
 
-   
-
     private String getDrawingTitle(){
         if((author == null || author.length() == 0 ) && (name == null || name.length() == 0 )){
             return "";
@@ -213,7 +214,6 @@ public class JPaintFrame extends JFrame implements ActionListener, MouseInputLis
         }
         if (e.getSource() == menuItemLoad){
             JOptionPane.showInputDialog(this, "Load drawing from:");
-
             this.setTitle(getWindowTitle());
         }
         if (e.getSource() == menuItemExit){
