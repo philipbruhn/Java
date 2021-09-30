@@ -1,5 +1,8 @@
 package se.miun.phbr1900.dt187g.jpaint;
 
+import java.awt.Graphics;
+import java.util.ArrayList;
+
 /**
 * <h1>Drawing</h1>
 * Class for Drawing, implements Drawable. 
@@ -10,8 +13,7 @@ package se.miun.phbr1900.dt187g.jpaint;
 * @version 1.1
 */
 
-import java.awt.Graphics;
-import java.util.ArrayList;
+
 
 public class Drawing implements Drawable {
     public Drawing() {

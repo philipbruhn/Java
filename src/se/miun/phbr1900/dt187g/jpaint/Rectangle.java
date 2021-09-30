@@ -1,15 +1,13 @@
 package se.miun.phbr1900.dt187g.jpaint;
-
+import java.awt.Graphics;
 /**
-* Rectangle
-*
 * Inherits from Shape. Adds methods for calcutating width, height, area and circumference on a rectangle.  
 *
 * @author phbr1900
 * @version 1.0
 */
 
-import java.awt.Graphics;
+
 
 public class Rectangle extends Shape {
     public Rectangle(double x, double y, String color) {

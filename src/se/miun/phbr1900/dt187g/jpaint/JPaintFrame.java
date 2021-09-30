@@ -7,11 +7,11 @@ import java.awt.event.*;
 
 /**
 * <h1>JPaintFrame</h1>
-* This in the UI for the paint application. 
-* Creates the UI on startup. 
+* This inplements the UI for the paint application. 
+* Creates the UI on startup. Contains listeners for basic operations. 
 * 
 * @author  phbr1900
-* @version 1.0
+* @version 1.1
 */
 
 public class JPaintFrame extends JFrame implements ActionListener, MouseInputListener{
