@@ -10,7 +10,7 @@ import java.awt.event.*;
 * This inplements the UI for the paint application. 
 * Creates the UI on startup. Contains listeners for basic operations. 
 * 
-* @author  phbr1900
+* @drawingdrawingPanel.getDrawing().getAuthor()  phbr1900
 * @version 1.1
 */
 
@@ -22,6 +22,7 @@ public class JPaintFrame extends JFrame implements ActionListener, MouseInputLis
     private JMenuItem menuItemNew;
     private JMenuItem menuItemSave;
     private JMenuItem menuItemLoad;
+    private JMenuItem menuItemInfo;
     private JMenuItem menuItemExit;
     private JMenu menuEdit;
     private JMenuItem menuItemUndo;
@@ -39,7 +40,7 @@ public class JPaintFrame extends JFrame implements ActionListener, MouseInputLis
     private JComboBox<String> shapesCB;
 
     //Draw area
-    private JPanel drawArea;
+    private DrawingPanel drawingPanel;
 
     //StatusBar
     private JPanel statusBar;
@@ -49,9 +50,7 @@ public class JPaintFrame extends JFrame implements ActionListener, MouseInputLis
     private JLabel colorLbl;
     private JPanel color;
 
-    //Variables
-    private String name;
-    private String author;
+
 
 
     public JPaintFrame() {
@@ -62,9 +61,6 @@ public class JPaintFrame extends JFrame implements ActionListener, MouseInputLis
 
 		// What should happen when the user closes the window
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		// Using null centers the window on the screen
-		setLocationRelativeTo(null);
 
 
 		// Initialize all components
@@ -82,7 +78,6 @@ public class JPaintFrame extends JFrame implements ActionListener, MouseInputLis
 	}
 
     private void initComponents(){
-        
         //MenuBar
         menuBar = new JMenuBar();
         
@@ -97,6 +92,9 @@ public class JPaintFrame extends JFrame implements ActionListener, MouseInputLis
         menuItemLoad = new JMenuItem("Load...");
         menuItemLoad.addActionListener(this);
         menuFile.add(menuItemLoad);
+        menuItemInfo = new JMenuItem("Info");
+        menuItemInfo.addActionListener(this);
+        menuFile.add(menuItemInfo);
         menuFile.addSeparator();
         menuItemExit = new JMenuItem("Exit");
         menuItemExit.addActionListener(this);
@@ -152,10 +150,10 @@ public class JPaintFrame extends JFrame implements ActionListener, MouseInputLis
         this.add(toolBar, BorderLayout.PAGE_START);
 
         //Draw Area
-        drawArea = new JPanel();
-        drawArea.setBackground(Color.WHITE);
-        drawArea.addMouseMotionListener(this);
-        this.add(drawArea, BorderLayout.CENTER);
+        drawingPanel = new DrawingPanel(new Drawing());
+        drawingPanel.addMouseMotionListener(this);
+        drawingPanel.addMouseListener(this);
+        this.add(drawingPanel, BorderLayout.CENTER);
 
         //StatusBar
         statusBar = new JPanel();
@@ -182,30 +180,41 @@ public class JPaintFrame extends JFrame implements ActionListener, MouseInputLis
     }
 
     private String getDrawingTitle(){
-        if((author == null || author.length() == 0 ) && (name == null || name.length() == 0 )){
+        if((drawingPanel.getDrawing().getAuthor() == null ||drawingPanel.getDrawing().getAuthor().length() == 0 ) 
+            && (drawingPanel.getDrawing().getName() == null ||drawingPanel.getDrawing().getName().length() == 0 )){
             return "";
         }
-        if(author == null || author.length() == 0 ){
-            return name;
+        if(drawingPanel.getDrawing().getAuthor() == null ||drawingPanel.getDrawing().getAuthor().length() == 0 ){
+            return drawingPanel.getDrawing().getName();
         }
-        if(name == null || name.length() == 0 ){
-            return author;
+        if(drawingPanel.getDrawing().getName() == null ||drawingPanel.getDrawing().getName().length() == 0 ){
+            return drawingPanel.getDrawing().getAuthor();
         }
-        return name + " by " + author;
+        return drawingPanel.getDrawing().getName() + " by " +drawingPanel.getDrawing().getAuthor();
     }
 
     private String getWindowTitle(){
         return "JPaint" + (getDrawingTitle() != "" ? " - " + getDrawingTitle() : "");
     }
+
     private String getFilename(){
         return getDrawingTitle() + ".shape" ;
+    }
+
+    private String[] getDrawingInfo(){
+        String[] info = {getDrawingTitle(),"Number of shapes: " + drawingPanel.getDrawing().shapes.size(), 
+                         "Total area: " + drawingPanel.getDrawing().getTotalArea(),
+                         "Total circumference: " + drawingPanel.getDrawing().getTotalCircumference()};
+        return info;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == menuItemNew){
-            name = JOptionPane.showInputDialog(this, "Please enter a name for the drawing");
-            author = JOptionPane.showInputDialog(this, "Please enter your name");
+            drawingPanel.setDrawing(new Drawing());
+            drawingPanel.getDrawing().setName( JOptionPane.showInputDialog(this, "Please enter a name for the drawing"));
+            drawingPanel.getDrawing().setAuthor(JOptionPane.showInputDialog(this, "Please enter your name"));
+            
             this.setTitle(getWindowTitle());
         }
         if (e.getSource() == menuItemSave){
@@ -214,20 +223,46 @@ public class JPaintFrame extends JFrame implements ActionListener, MouseInputLis
         }
         if (e.getSource() == menuItemLoad){
             JOptionPane.showInputDialog(this, "Load drawing from:");
+            Drawing monaLisa = new Drawing();
+		
+            monaLisa.setName("Mona Lisa");
+            monaLisa.setAuthor("L. da Vincis");
+            
+            
+            Shape face = new Circle(100,100, "#ffe0bd"); // RGB(255,224,189)
+            Shape leftEye = new Circle(75, 75, "#0000ff"); // RGB(0, 0, 255)
+            Shape rightEye = new Circle(125, 75, "#0000ff"); // RGB(0, 0, 255)
+            Shape nose = new Rectangle(95, 100, "#000000"); // RGB(0, 0, 0)
+            Shape mouth = new Rectangle(55, 130, "#ff0000"); // RGB(255, 0, 0)
+            
+            monaLisa.addShape(face);
+            monaLisa.addShape(leftEye);
+            monaLisa.addShape(rightEye);
+            monaLisa.addShape(nose);
+            monaLisa.addShape(mouth);
+            face.addPoint(175, 100);
+            leftEye.addPoint(85, 75);
+            rightEye.addPoint(135, 75);
+            nose.addPoint(105, 115);
+            mouth.addPoint(145, 140);
+            drawingPanel.setDrawing(monaLisa);
             this.setTitle(getWindowTitle());
+        }
+        if (e.getSource() == menuItemInfo){
+            JOptionPane.showMessageDialog(this, getDrawingInfo());
         }
         if (e.getSource() == menuItemExit){
             this.dispose();
         }
         if (e.getSource() == menuItemUndo){
-
+            drawingPanel.removeLastShapeFromList();
         }
         if (e.getSource() == menuItemName){
-            name = JOptionPane.showInputDialog(this, "Please enter a name for the drawing");
+            drawingPanel.getDrawing().setName(JOptionPane.showInputDialog(this, "Please enter a name for the drawing"));
             this.setTitle(getWindowTitle());
         }
         if (e.getSource() == menuItemAuthor){
-            author = JOptionPane.showInputDialog(this, "Please enter your name");
+            drawingPanel.getDrawing().setAuthor(JOptionPane.showInputDialog(this, "Please enter your name"));
             this.setTitle(getWindowTitle());
         }
         
@@ -255,14 +290,23 @@ public class JPaintFrame extends JFrame implements ActionListener, MouseInputLis
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        if(e.getSource() == drawingPanel){
+            String colorHex = String.format("#%02X%02X%02X", color.getBackground().getRed(), color.getBackground().getGreen(),color.getBackground().getBlue());
+            if(shapesCB.getSelectedItem().toString() == "Rectangle"){
+                Rectangle rect = new Rectangle(e.getX(),e.getY(),colorHex);
+                drawingPanel.getDrawing().addShape(rect);
+            }
+            if(shapesCB.getSelectedItem().toString() == "Circle"){
+                Circle circle = new Circle(e.getX(),e.getY(),colorHex);
+                drawingPanel.getDrawing().addShape(circle);
+            }
+        }
         
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
 
-        
     }
 
     @Override
@@ -279,14 +323,17 @@ public class JPaintFrame extends JFrame implements ActionListener, MouseInputLis
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
+        if(e.getSource() == drawingPanel){
+            coordinatesLbl.setText("Coordinates: " + e.getX() + "," + e.getY());
+            drawingPanel.getDrawing().shapes.get(drawingPanel.getDrawing().shapes.size()-1).addPoint(new Point(e.getX(),e.getY()));
+        }
         
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        if(e.getSource() == drawArea){
-            coordinatesLbl.setText("Coordinates: " + e.getX() + "," + e.getY());;
+        if(e.getSource() == drawingPanel){
+            coordinatesLbl.setText("Coordinates: " + e.getX() + "," + e.getY());
         }
     }
 

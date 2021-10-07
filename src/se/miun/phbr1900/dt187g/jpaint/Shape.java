@@ -42,8 +42,11 @@ public abstract class Shape implements Drawable {
     public void addPoint(Point point){
         if(hasEndpoint()){
             points.set(1, point);
+
         }
-        points.add(point);
+        else{
+            points.add(point);
+        }
     }
     public void addPoint(double x, double y){
         addPoint(new Point(x,y));

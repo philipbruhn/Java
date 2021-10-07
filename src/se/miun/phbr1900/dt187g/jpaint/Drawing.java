@@ -27,7 +27,7 @@ public class Drawing implements Drawable {
 
     private String name = "";
     private String author = "";
-    private ArrayList<Shape> shapes = new ArrayList<Shape>();
+    protected ArrayList<Shape> shapes = new ArrayList<Shape>();
 
     public String getName(){
         return name;
@@ -89,7 +89,11 @@ public class Drawing implements Drawable {
 
     @Override
     public void draw(Graphics g) {
-        
+        for (var shape : shapes){
+            if (shape.hasEndpoint()){
+                shape.draw(g);
+            }
+        }
     }
 
     public boolean save(String filename) throws DrawingException{

@@ -10,6 +10,8 @@ package se.miun.phbr1900.dt187g.jpaint;
 */
 
 import java.awt.Graphics;
+import java.awt.geom.*;
+import java.awt.*;
 
 public class Circle extends Shape {
     public Circle(double x, double y, String color) {
@@ -45,7 +47,12 @@ public class Circle extends Shape {
     }
     @Override
     public void draw(Graphics g) {
-        
+        Graphics2D g2 = (Graphics2D) g;
+        double x = points.get(0).getX() - getRadius();
+        double y = points.get(0).getY() - getRadius();
+        Ellipse2D ellipse2D = new Ellipse2D.Double(x, y, getRadius()*2, getRadius()*2);
+        g2.setColor(Color.decode(color));
+        g2.fill(ellipse2D);
     }
     @Override
     public double getCircumference() {
