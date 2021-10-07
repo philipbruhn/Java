@@ -1,5 +1,8 @@
 package se.miun.phbr1900.dt187g.jpaint;
 import java.awt.Graphics;
+import java.awt.*;
+import java.awt.geom.*;
+
 /**
 * Inherits from Shape. Adds methods for calcutating width, height, area and circumference on a rectangle.  
 *
@@ -46,11 +49,17 @@ public class Rectangle extends Shape {
         System.out.println(toString());
         
     }
+
     @Override
     public void draw(Graphics g) {
-
-        
+        Graphics2D g2 = (Graphics2D) g;
+        double minX = Math.min(points.get(0).getX(), points.get(1).getX());
+        double minY = Math.min(points.get(0).getY(), points.get(1).getY());
+        Rectangle2D rectangle2D = new Rectangle2D.Double(minX, minY, getWidth(), getHeight());
+        g2.setColor(Color.decode(color));
+        g2.fill(rectangle2D);        
     }
+
     @Override
     public double getCircumference() {
         if(hasEndpoint()){
@@ -58,6 +67,7 @@ public class Rectangle extends Shape {
         }
         return -1;
     }
+
     @Override
     public double getArea() {
         if(hasEndpoint()){
@@ -65,6 +75,7 @@ public class Rectangle extends Shape {
         }
         return -1;
     }
+    
     @Override
     public String toString(){
         if(hasEndpoint()){
