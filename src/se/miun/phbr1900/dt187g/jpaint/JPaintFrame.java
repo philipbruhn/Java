@@ -291,7 +291,7 @@ public class JPaintFrame extends JFrame implements ActionListener, MouseInputLis
     @Override
     public void mousePressed(MouseEvent e) {
         if(e.getSource() == drawingPanel){
-            String colorHex = String.format("#%02X%02X%02X", color.getBackground().getRed(), color.getBackground().getGreen(),color.getBackground().getBlue());
+            String colorHex = String.format("#" + Integer.toHexString(color.getBackground().getRGB()).substring(2));
             if(shapesCB.getSelectedItem().toString() == "Rectangle"){
                 Rectangle rect = new Rectangle(e.getX(),e.getY(),colorHex);
                 drawingPanel.getDrawing().addShape(rect);
@@ -325,7 +325,7 @@ public class JPaintFrame extends JFrame implements ActionListener, MouseInputLis
     public void mouseDragged(MouseEvent e) {
         if(e.getSource() == drawingPanel){
             coordinatesLbl.setText("Coordinates: " + e.getX() + "," + e.getY());
-            drawingPanel.getDrawing().shapes.get(drawingPanel.getDrawing().shapes.size()-1).addPoint(new Point(e.getX(),e.getY()));
+            drawingPanel.getDrawing().addPointToLatestShape(new Point(e.getX(),e.getY()));
         }
         
     }

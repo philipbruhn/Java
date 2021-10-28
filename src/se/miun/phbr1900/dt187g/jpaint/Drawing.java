@@ -51,6 +51,13 @@ public class Drawing implements Drawable {
         }
     }
 
+    public void addPointToLatestShape(Point point){
+        if (shapes != null || shapes.size() == 0){
+            shapes.get(shapes.size()-1).addPoint(point);
+        }
+        
+    }
+
     public int getSize(){
         return shapes.size();
     }
