@@ -32,6 +32,10 @@ public abstract class Shape implements Drawable {
     public void setColor(String color){
         this.color = color;
     }
+    
+    public Point getPoint(int index){
+        return points.get(index);
+    }
 
     public abstract boolean hasEndpoint();
 

@@ -1,7 +1,10 @@
 package se.miun.phbr1900.dt187g.jpaint;
 
 import java.awt.Graphics;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.nio.file.*;
 
 /**
 * <h1>Drawing</h1>
@@ -113,7 +116,55 @@ public class Drawing implements Drawable {
         if(name == null || name.length() == 0 ){
             throw new DrawingException("The drawing is missing name");
         }
-        return true;
+        if (!filename.endsWith(".shape")){
+            filename += ".shape";
+        }
+        try{
+            Path path = Path.of("SavedPictures" ,filename);
+            List<String> lines = new ArrayList<String>();
+            lines.add(name);
+            lines.add(author);
+            for (var shape :shapes ){
+                String line = shape.getClass().getSimpleName().toLowerCase() + "," + shape.getPoint(0) + "," + shape.getPoint(1) + "," + shape.getColor();
+                lines.add(line.replace(" ", ""));
+            }
+            Files.write(path, lines);
+            return true;
+        }
+        catch (Exception e){
+            System.err.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean load(String filename){
+        Path file = Path.of(filename);
+        try{
+            List<String> lines = Files.readAllLines(file);
+            name = lines.get(0);
+            author = lines.get(1);
+            for(int i = 2; i < lines.size(); i++){
+                if (!lines.get(i).isBlank()){
+                    String[] param = lines.get(i).split(",");
+                    Shape shape = null;
+                    Point p1 = new Point(Double.parseDouble(param[1]),Double.parseDouble(param[2]));
+                    Point p2 = new Point(Double.parseDouble(param[3]),Double.parseDouble(param[4]));
+                    if (param[0].equals("rectangle")){
+                        shape = new Rectangle(p1,param[5]);
+                    }
+                    if (param[0].equals("circle")){
+                        shape = new Circle(p1,param[5]);
+                    }
+                    shape.addPoint(p2);
+                    addShape(shape);
+                }
+            }
+            return true;
+        }
+        catch (IOException e){
+            System.err.println(e.getMessage());
+            return false;
+        }
     }
 
     @Override

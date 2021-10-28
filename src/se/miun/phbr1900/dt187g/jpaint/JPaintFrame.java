@@ -218,34 +218,30 @@ public class JPaintFrame extends JFrame implements ActionListener, MouseInputLis
             this.setTitle(getWindowTitle());
         }
         if (e.getSource() == menuItemSave){
-            JOptionPane.showInputDialog(this, "Save drawing to:", getFilename());
+            String input = JOptionPane.showInputDialog(this, "Save drawing to:", getFilename());
+            if (input != null){
+                try{
+                
+                    drawingPanel.getDrawing().save(input);
+                }
+                catch (DrawingException error){
+                    JOptionPane.showMessageDialog(this, error.getMessage());
+                }
+            }
             this.setTitle(getWindowTitle());
         }
         if (e.getSource() == menuItemLoad){
-            JOptionPane.showInputDialog(this, "Load drawing from:");
-            Drawing monaLisa = new Drawing();
-		
-            monaLisa.setName("Mona Lisa");
-            monaLisa.setAuthor("L. da Vincis");
             
-            
-            Shape face = new Circle(100,100, "#ffe0bd"); // RGB(255,224,189)
-            Shape leftEye = new Circle(75, 75, "#0000ff"); // RGB(0, 0, 255)
-            Shape rightEye = new Circle(125, 75, "#0000ff"); // RGB(0, 0, 255)
-            Shape nose = new Rectangle(95, 100, "#000000"); // RGB(0, 0, 0)
-            Shape mouth = new Rectangle(55, 130, "#ff0000"); // RGB(255, 0, 0)
-            
-            monaLisa.addShape(face);
-            monaLisa.addShape(leftEye);
-            monaLisa.addShape(rightEye);
-            monaLisa.addShape(nose);
-            monaLisa.addShape(mouth);
-            face.addPoint(175, 100);
-            leftEye.addPoint(85, 75);
-            rightEye.addPoint(135, 75);
-            nose.addPoint(105, 115);
-            mouth.addPoint(145, 140);
-            drawingPanel.setDrawing(monaLisa);
+            String input = JOptionPane.showInputDialog(this, "Load drawing from:");
+            if (input != null){
+                drawingPanel.setDrawing(new Drawing());
+                try{
+                    drawingPanel.getDrawing().load(input);
+                }
+                catch (Exception error){
+                    JOptionPane.showMessageDialog(this, error.getMessage());
+                }
+            }
             this.setTitle(getWindowTitle());
         }
         if (e.getSource() == menuItemInfo){
