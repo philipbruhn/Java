@@ -138,7 +138,7 @@ public class Drawing implements Drawable {
     }
 
     public boolean load(String filename){
-        Path file = Path.of(filename);
+        Path file = Path.of("SavedPictures", filename);
         try{
             List<String> lines = Files.readAllLines(file);
             name = lines.get(0);
